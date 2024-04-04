@@ -8,28 +8,51 @@ from kivy.uix.button import Button
 
 class Bingo(GridLayout):
     #Create Initialise the grid layout
+    
+    # Create a press button function
+    def press(self, instance):
+        number = self.number.getRandomNum()
+
+        while number in self.numSet:
+            number = self.number.getRandomNum()
+        
+        self.numSet.add(int(number))
+        self.top_grid.add_widget(Label(text = str(number)))
+
+    # Create a printLsit function to print off all numbers that have been added
+    def printList(self, instance):
+        self.add_widget(Label(text = str(sorted(self.numSet))))
+        print(self.numSet)
+
     def __init__(self, **kwargs):
        
        #Call grid layout constructor
        super(Bingo, self).__init__(**kwargs)
 
        # Set number of columns
-       self.cols = 2
+       self.cols = 1
+
+       # Create and add top grid
+       self.top_grid = GridLayout()
+       self.top_grid.cols = 10
+       
+       self.top_grid.add_widget(Label(text = "Numbers list"))
+       self.add_widget(self.top_grid)
 
        #Create a NumberGenerator Instance
        self.number = NumberGenerator()
-       
        self.numSet = set()
-
+       
+       # Add the bottom New Number button
        self.newNum = Button(text = 'New Number', font_size = 40)
        self.newNum.bind(on_press=self.press)
        self.add_widget(self.newNum)
 
-    def press(self, instance):
-        number = self.number.getRandomNum()
-        
-        self.add_widget(Label(text = str(number)))
-        self.numSet.add(number)
+       # Add the Print set button
+       self.submit = Button(text = "Print Set", font_size = 40)
+       self.submit.bind(on_press = self.printList)
+       self.add_widget(self.submit)
+
 
 class NumberGenerator():
     def __init__(self):

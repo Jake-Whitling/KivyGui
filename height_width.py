@@ -47,6 +47,7 @@ class MyGridLayout(GridLayout):
                              size_hint_x = None,
                              width = 200
                              )
+        
         #Bind the button
         self.submit.bind(on_press=self.press)
         self.add_widget(self.submit)
